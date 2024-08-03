@@ -10,7 +10,7 @@ public class Compra {
     private List<Producto> productos;
 
     // Getters y setters
-    public Compra(int id, String username, List<Producto> productos) {
+    public Compra( String username, List<Producto> productos) {
         this.id = getLasPurchase();
         this.username = username;
         this.productos = productos;

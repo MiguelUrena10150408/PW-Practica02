@@ -12,7 +12,7 @@ public class UserServices {
     private UserServices() {
         // Agrega un usuario administrador por defecto
         users.add(new User("M1504","Miguel", "123456"));
-        users.add(new User( "admin", "admin", "admin1234", true));
+        users.add(new User( "admin", "admin", "admin"));
     }
     public static UserServices getRama() {
         if(Rama == null){
@@ -40,5 +40,9 @@ public class UserServices {
 
     public static void addUser(User user) {
         users.add(user);
+    }
+
+    public static void deleteUser(int id) {
+        users.removeIf(user -> user.getId() == id);
     }
 }

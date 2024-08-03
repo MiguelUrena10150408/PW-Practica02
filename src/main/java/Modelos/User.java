@@ -19,14 +19,6 @@ public class User {
 
     }
 
-    public User(String username, String name, String password, boolean isAdmin){
-        this.id = UserServices.getLastUser();
-        this.username = username;
-        this.name = name;
-        this.password = password;
-        this.isAdmin = isAdmin;
-
-    }
 
     public int getId() {
         return id;

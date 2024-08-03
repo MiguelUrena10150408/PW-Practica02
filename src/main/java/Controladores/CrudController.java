@@ -24,35 +24,65 @@ public class CrudController {
 
     public static void listarProductos(@NotNull Context ctx) throws Exception{
         List<Producto> productoLista = productServices.getAllProducts();
+
     }
 
     public static void listarCompras(@NotNull Context ctx) throws Exception{
         List<Compra> purchaseLista = purchaseServices.getAllPurchases();
     }
     public static void FormCrearUser(@NotNull Context ctx) throws Exception {
+
         Map<String, Object> modelo = new HashMap<>();
         modelo.put("titulo", "Formulario Creación Usuario");
-        modelo.put("accion", "/");
+        modelo.put("accion", "/addCart");
+        modelo.put("funda",(ProductServices.getCarrito() !=null )? ProductServices.countCarrito() : 0 );
 
-        ctx.render("/shoppy/assets/authentication-register.html", modelo);
+        ctx.render("/shoppy/NuevosArchivos/authentication-register.html", modelo);
     }
     public static void procesarCreacionUser(@NotNull Context ctx) throws Exception{
-        String nombre = ctx.pathParam("nombre");
+        String name = "Jose";
         String username = ctx.pathParam("username");
         String password = ctx.pathParam("password");
 
-        User temp = new User(username, nombre, password);
+        User temp = new User(username, name, password);
         userServices.addUser(temp);
 
-        ctx.redirect("/shoppy/assets/index.html");
+        ctx.redirect("/templates/index.html");
 
     }
 
     public static void procesarCreacionProducto(@NotNull Context ctx) throws Exception{
 
+        String nombre = ctx.formParam("productNombre");
+        double precio = Double.parseDouble(ctx.formParam("price"));
+        int stock = Integer.parseInt(ctx.formParam("stock"));
+
+        Producto temp = new Producto(nombre,precio,stock);
+        ProductServices.addProduct(temp);
+        ctx.redirect("/templates/index.html");
     }
 
     public static void procesarCreacionFactura(@NotNull Context ctx) throws Exception{
 
+        String nombre = ctx.formParam("nombre");
+        List<Producto> factura = productServices.getCarrito();
+
+
+        Compra temp = new Compra(nombre,factura);
+        PurchaseServices.addPurchase(temp);
+        ctx.redirect("/");
+    }
+
+    public static void procesarBorrarProducto(@NotNull Context ctx) throws Exception{
+
+        String nombre = ctx.formParam("productNombre");
+        productServices.deleteProduct(nombre);
+        ctx.redirect("/");
+    }
+    public static void procesarBorrarProductoCarrito(@NotNull Context ctx) throws Exception{
+
+        String nombre = ctx.formParam("productNombre");
+        productServices.deleteFromCarrito(nombre);
+        ctx.redirect("/");
     }
 }
